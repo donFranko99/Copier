@@ -23,6 +23,7 @@ namespace Zadanie1
 
         public void Scan(out IDocument document, IDocument.FormatType formatType)
         {
+            document = null;
             if (state == IDevice.State.on)
             {
                 ScanCounter++;
@@ -30,20 +31,21 @@ namespace Zadanie1
                 {
                     case IDocument.FormatType.TXT:
                         {
+                            document = new TextDocument($"TextScan{ScanCounter}");
                             break;
                         }
                     case IDocument.FormatType.PDF:
                         {
+                            document = new PDFDocument($"PDFScan{ScanCounter}");
                             break;
                         }
                     case IDocument.FormatType.JPG:
                         {
+                            document = new ImageDocument($"ImageScan{ScanCounter}");
                             break;
                         }
-                    default:
-                        break;
                 }
-                Console.WriteLine($"{DateTime.Now} Scan: {}");
+                Console.WriteLine($"{DateTime.Now} Scan: {document.GetFileName}.{document.GetFormatType}");
             }
         }
     }
