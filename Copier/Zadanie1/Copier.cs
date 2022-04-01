@@ -11,6 +11,7 @@ namespace Zadanie1
         public int PrintCounter { get; private set; } = 0;
         public int ScanCounter { get; private set; } = 0;
         
+
         public void Print(in IDocument document)
         {
             if (state == IDevice.State.on)
@@ -21,9 +22,8 @@ namespace Zadanie1
             }
         }
 
-        public void Scan(out IDocument document, IDocument.FormatType formatType)
+        public void Scan(out IDocument document, IDocument.FormatType formatType = IDocument.FormatType.JPG)
         {
-            document = null;
             if (state == IDevice.State.on)
             {
                 ScanCounter++;
@@ -44,9 +44,19 @@ namespace Zadanie1
                             document = new ImageDocument($"ImageScan{ScanCounter}");
                             break;
                         }
+                    default:
+                        {
+                            throw new ArgumentOutOfRangeException();
+                        }
                 }
                 Console.WriteLine($"{DateTime.Now} Scan: {document.GetFileName}.{document.GetFormatType}");
             }
+            throw new ArgumentOutOfRangeException();
+        }
+        public void ScanAndPrint(out IDocument document)
+        {
+            Scan(out document, IDocument.FormatType.JPG);
+            Print(document);
         }
     }
 }
